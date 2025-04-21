@@ -70,15 +70,13 @@ const BookingsTable = () => {
   };
 
   const handleDeleteBooking = async (bookingId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this user?"
-    );
+    const confirmDelete = window.confirm("Bạn có chắn chắn muốn xoá?");
 
     if (!confirmDelete) return;
 
     try {
       const response = await fetch(`${BASE_URL}/bookings/${bookingId}`, {
-        method: "PUT",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
@@ -184,11 +182,21 @@ const BookingsTable = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  const getStatus = (status) => {
+    if (status === "pending") {
+      return "Chờ xác nhận";
+    } else if (status === "confirmed") {
+      return "Đã xác nhận";
+    } else {
+      return "Hoàn thành";
+    }
+  };
+
   return (
     <div>
       <div className="d-flex gap-3 mb-3">
         <TextField
-          label="Search by Email, Name, TourName, Phone (+84 xxxxxxxxx) or BookAt"
+          label="Tìm kiếm theo tên, email, số điện thoại"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           variant="outlined"
@@ -227,7 +235,7 @@ const BookingsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                User email {renderSortIcon("userEmail")}
+                Email {renderSortIcon("userEmail")}
               </TableCell>
               <TableCell
                 onClick={() => sortBookings("tourName")}
@@ -239,7 +247,7 @@ const BookingsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Tour name {renderSortIcon("tourName")}
+                Tên chuyến đi {renderSortIcon("tourName")}
               </TableCell>
               <TableCell
                 onClick={() => sortBookings("fullName")}
@@ -251,7 +259,7 @@ const BookingsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                FullName {renderSortIcon("fullName")}
+                Tên người đặt {renderSortIcon("fullName")}
               </TableCell>
               <TableCell
                 onClick={() => sortBookings("guestSize")}
@@ -263,7 +271,7 @@ const BookingsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Guest size {renderSortIcon("guestSize")}
+                Số người {renderSortIcon("guestSize")}
               </TableCell>
               <TableCell
                 onClick={() => sortBookings("phone")}
@@ -275,7 +283,7 @@ const BookingsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Phone {renderSortIcon("phone")}
+                Số điện thoại {renderSortIcon("phone")}
               </TableCell>
               <TableCell
                 onClick={() => sortBookings("bookAt")}
@@ -287,7 +295,7 @@ const BookingsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                BookAt {renderSortIcon("bookAt")}
+                Ngày đi {renderSortIcon("bookAt")}
               </TableCell>
               <TableCell
                 onClick={() => sortBookings("totalPrice")}
@@ -299,7 +307,7 @@ const BookingsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Total Price {renderSortIcon("totalPrice")}
+                Tổng tiền {renderSortIcon("totalPrice")}
               </TableCell>
               <TableCell
                 onClick={() => sortBookings("isPayment")}
@@ -311,7 +319,7 @@ const BookingsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Payment {renderSortIcon("isPayment")}
+                Thanh toán {renderSortIcon("isPayment")}
               </TableCell>
               <TableCell
                 onClick={() => sortBookings("status")}
@@ -323,7 +331,7 @@ const BookingsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Status {renderSortIcon("status")}
+                Trạng thái {renderSortIcon("status")}
               </TableCell>
               <TableCell
                 sx={{
@@ -334,7 +342,7 @@ const BookingsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Actions
+                Hành động
               </TableCell>
             </TableRow>
           </TableHead>
@@ -361,12 +369,12 @@ const BookingsTable = () => {
                   <TableCell>
                     {/* {booking.isPayment ? "Paid" : "Unpaid"} */}
                     {booking.isPayment ? (
-                      <span style={{ color: "green" }}>Yes</span>
+                      <span style={{ color: "green" }}>Đã thanh toán</span>
                     ) : (
-                      <span style={{ color: "red" }}>No</span>
+                      <span style={{ color: "red" }}>Chưa thanh toán</span>
                     )}
                   </TableCell>
-                  <TableCell>{booking.status}</TableCell>
+                  <TableCell>{getStatus(booking.status)}</TableCell>
                   <TableCell>
                     <Button
                       onClick={() => openEditModal(booking)}
@@ -374,14 +382,14 @@ const BookingsTable = () => {
                       color="primary"
                       style={{ marginRight: "10px" }}
                     >
-                      Edit
+                      Sửa
                     </Button>
                     <Button
                       onClick={() => handleDeleteBooking(booking._id)}
                       variant="outlined"
                       color="error"
                     >
-                      Delete
+                      Xoá
                     </Button>
                   </TableCell>
                 </TableRow>

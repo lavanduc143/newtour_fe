@@ -105,11 +105,11 @@ const EditUserModal = ({
     <div className="edit-user-form mb-4 mt-4">
       {editingUser && ( // Chỉ hiển thị form khi editingUser có giá trị
         <Form>
-          <h3>Edit User</h3>
+          <h3>Sửa tài khoản</h3>
           <Row>
             <Col md={6}>
               <FormGroup>
-                <Label for="username">Username</Label>
+                <Label for="username">Tên tài khoản</Label>
                 <Input
                   type="text"
                   name="username"
@@ -129,7 +129,7 @@ const EditUserModal = ({
             </Col>
             <Col md={6}>
               <FormGroup>
-                <Label for="avatar">Avatar Url</Label>
+                <Label for="avatar">Ảnh đại diện</Label>
                 <Input
                   type="file"
                   name="avatar"
@@ -149,7 +149,7 @@ const EditUserModal = ({
           <Row>
             <Col md={6}>
               <FormGroup>
-                <Label for="password">Password</Label>
+                <Label for="password">Mật khẩu</Label>
                 <Input
                   type="text"
                   name="password"
@@ -169,7 +169,7 @@ const EditUserModal = ({
             </Col>
             <Col md={6}>
               <FormGroup>
-                <Label for="role">Role</Label>
+                <Label for="role">Quyền</Label>
                 <Input
                   type="select"
                   name="role"
@@ -193,10 +193,10 @@ const EditUserModal = ({
           </Row>
           <div className="form-buttons">
             <Button color="primary" onClick={handleEditUser}>
-              Save
+              Lưu
             </Button>{" "}
             <Button color="secondary" onClick={toggleEditMode}>
-              Cancel
+              Huỷ
             </Button>
           </div>
         </Form>

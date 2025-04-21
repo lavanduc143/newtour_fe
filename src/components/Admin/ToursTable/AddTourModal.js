@@ -18,15 +18,15 @@ const AddTourModal = ({
   handleChange,
   handleAddTour,
   handlePhotoChange,
-  setNewTour
+  setNewTour,
 }) => {
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
-      <ModalHeader toggle={toggle}>Add New Tour</ModalHeader>
+      <ModalHeader toggle={toggle}>Thêm tour mới</ModalHeader>
       <ModalBody>
         <Form>
           <FormGroup>
-            <Label for="title">Title</Label>
+            <Label for="title">Tên</Label>
             <Input
               type="text"
               name="title"
@@ -35,11 +35,11 @@ const AddTourModal = ({
             />
           </FormGroup>
           <FormGroup>
-            <Label for="city">City</Label>
+            <Label for="city">Thành phố</Label>
             <Input type="text" name="city" id="city" onChange={handleChange} />
           </FormGroup>
           <FormGroup>
-            <Label for="address">Address</Label>
+            <Label for="address">Địa chỉ</Label>
             <Input
               type="text"
               name="address"
@@ -48,7 +48,7 @@ const AddTourModal = ({
             />
           </FormGroup>
           <FormGroup>
-            <Label for="day">Day</Label>
+            <Label for="day">Số ngày</Label>
             <Input
               type="number"
               name="day"
@@ -60,7 +60,7 @@ const AddTourModal = ({
             />
           </FormGroup>
           <FormGroup>
-            <Label for="photo">Photo</Label>
+            <Label for="photo">Ảnh</Label>
             <Input
               type="file"
               name="photo"
@@ -71,7 +71,7 @@ const AddTourModal = ({
             />
           </FormGroup>
           <FormGroup>
-            <Label for="desc">Description</Label>
+            <Label for="desc">Mô tả</Label>
             <Input
               type="textarea"
               name="desc"
@@ -80,7 +80,7 @@ const AddTourModal = ({
             />
           </FormGroup>
           <FormGroup>
-            <Label for="price">Price</Label>
+            <Label for="price">Giá</Label>
             <Input
               type="number"
               name="price"
@@ -92,7 +92,7 @@ const AddTourModal = ({
             />
           </FormGroup>
           <FormGroup>
-            <Label for="maxGroupSize">Max Group Size</Label>
+            <Label for="maxGroupSize">Số người tối đa</Label>
             <Input
               type="number"
               name="maxGroupSize"
@@ -104,7 +104,7 @@ const AddTourModal = ({
             />
           </FormGroup>
           <FormGroup>
-            <Label for="featured">Featured</Label>
+            <Label for="featured">Tour nổi bật</Label>
             <Input
               type="select"
               name="featured"
@@ -112,18 +112,18 @@ const AddTourModal = ({
               value={newTour?.featured} // Hiển thị giá trị hiện tại
               onChange={handleChange}
             >
-              <option value={false}>No</option>
-              <option value={true}>Yes</option>
+              <option value={false}>Có</option>
+              <option value={true}>Không</option>
             </Input>
           </FormGroup>
         </Form>
       </ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={handleAddTour}>
-          Save
+          Lưu
         </Button>
         <Button color="secondary" onClick={toggle}>
-          Cancel
+          Huỷ
         </Button>
       </ModalFooter>
     </Modal>

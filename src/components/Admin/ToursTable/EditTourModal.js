@@ -21,12 +21,12 @@ const EditTourModal = ({
 }) => {
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
-      <ModalHeader toggle={toggle}>Edit Tour</ModalHeader>
+      <ModalHeader toggle={toggle}>Sửa Tour</ModalHeader>
       <ModalBody>
         {editingTour && (
           <Form>
             <FormGroup>
-              <Label for="title">Title</Label>
+              <Label for="title">Tên</Label>
               <Input
                 type="text"
                 name="title"
@@ -38,7 +38,7 @@ const EditTourModal = ({
               />
             </FormGroup>
             <FormGroup>
-              <Label for="city">City</Label>
+              <Label for="city">Thành phố</Label>
               <Input
                 type="text"
                 name="city"
@@ -50,7 +50,7 @@ const EditTourModal = ({
               />
             </FormGroup>
             <FormGroup>
-              <Label for="address">Address</Label>
+              <Label for="address">Địa chỉ</Label>
               <Input
                 type="text"
                 name="address"
@@ -62,7 +62,7 @@ const EditTourModal = ({
               />
             </FormGroup>
             <FormGroup>
-              <Label for="day">Day</Label>
+              <Label for="day">Số ngày</Label>
               <Input
                 type="number"
                 name="day"
@@ -76,17 +76,17 @@ const EditTourModal = ({
               />
             </FormGroup>
             <FormGroup>
-            <Label for="photo">Photo</Label>
-            <Input
-              type="file"
-              name="photo"
-              id="photo"
-              // onChange={handlePhotoChange}
-              onChange={(e) => handlePhotoChange(e, setEditingTour)}
-            />
-          </FormGroup>
+              <Label for="photo">Ảnh</Label>
+              <Input
+                type="file"
+                name="photo"
+                id="photo"
+                // onChange={handlePhotoChange}
+                onChange={(e) => handlePhotoChange(e, setEditingTour)}
+              />
+            </FormGroup>
             <FormGroup>
-              <Label for="desc">Description</Label>
+              <Label for="desc">Mô tả</Label>
               <Input
                 type="textarea"
                 name="desc"
@@ -98,7 +98,7 @@ const EditTourModal = ({
               />
             </FormGroup>
             <FormGroup>
-              <Label for="price">Price</Label>
+              <Label for="price">Giá</Label>
               <Input
                 type="number"
                 name="price"
@@ -112,7 +112,7 @@ const EditTourModal = ({
               />
             </FormGroup>
             <FormGroup>
-              <Label for="maxGroupSize">Max Group Size</Label>
+              <Label for="maxGroupSize">Số người tối đa</Label>
               <Input
                 type="number"
                 name="maxGroupSize"
@@ -129,7 +129,7 @@ const EditTourModal = ({
               />
             </FormGroup>
             <FormGroup>
-              <Label for="featured">Featured</Label>
+              <Label for="featured">Tour nổi bật</Label>
               <Input
                 type="select"
                 name="featured"
@@ -139,8 +139,8 @@ const EditTourModal = ({
                   setEditingTour({ ...editingTour, featured: e.target.value })
                 }
               >
-                <option value={false}>No</option>
-                <option value={true}>Yes</option>
+                <option value={false}>Không</option>
+                <option value={true}>Có</option>
               </Input>
             </FormGroup>
           </Form>
@@ -148,10 +148,10 @@ const EditTourModal = ({
       </ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={handleEditTour}>
-          Save
+          Lưu
         </Button>
         <Button color="secondary" onClick={toggle}>
-          Cancel
+          Huỷ
         </Button>
       </ModalFooter>
     </Modal>

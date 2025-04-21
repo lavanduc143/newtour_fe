@@ -17,6 +17,7 @@ import AddBlogModal from "./AddBlogModal";
 import EditBlogModal from "./EditBlogModal";
 import SearchIcon from "@mui/icons-material/Search";
 import { toast } from "react-toastify";
+import ReactPaginate from "react-paginate";
 
 const BlogsTable = () => {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -113,13 +114,11 @@ const BlogsTable = () => {
   };
 
   const handleDeleteBlog = async (blogId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this blog?"
-    );
+    const confirmDelete = window.confirm("Bạn có chắn chắn muốn xoá?");
     if (!confirmDelete) return;
     try {
       const response = await fetch(`${BASE_URL}/blogs/${blogId}`, {
-        method: "PUT",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
@@ -211,6 +210,18 @@ const BlogsTable = () => {
     );
   });
 
+  //phân trang
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const offset = currentPage * itemsPerPage;
+  const currentItems = filteredBlogs.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(filteredBlogs.length / itemsPerPage);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -219,7 +230,7 @@ const BlogsTable = () => {
       <div className="d-flex gap-3 mb-3">
         {/* Search Bar */}
         <TextField
-          label="Search by Title or Description"
+          label="Tìm theo tiêu đề"
           variant="outlined"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -233,7 +244,7 @@ const BlogsTable = () => {
           }}
         />
         <Button variant="contained" color="primary" onClick={toggleModal}>
-          Add Blog
+          Thêm Blog
         </Button>
       </div>
 
@@ -250,7 +261,18 @@ const BlogsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Image
+                Ảnh
+              </TableCell>
+              <TableCell
+                sx={{
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  paddingRight: 1,
+                  "&:hover": { color: "primary.main" },
+                  whiteSpace: "nowrap", // Prevent wrapping
+                }}
+              >
+                ID
               </TableCell>
               <TableCell
                 onClick={() => sortBlogs("title")}
@@ -262,7 +284,7 @@ const BlogsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Title {renderSortIcon("title")}
+                Tiêu đề {renderSortIcon("title")}
               </TableCell>
               <TableCell
                 onClick={() => sortBlogs("description")}
@@ -274,7 +296,7 @@ const BlogsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Description {renderSortIcon("description")}
+                Nội dung {renderSortIcon("description")}
               </TableCell>
               <TableCell
                 sx={{
@@ -285,12 +307,12 @@ const BlogsTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Actions
+                Hành động
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredBlogs?.map((blog) => (
+            {currentItems?.map((blog) => (
               <TableRow key={blog._id}>
                 <TableCell>
                   <img
@@ -303,6 +325,7 @@ const BlogsTable = () => {
                     }}
                   />
                 </TableCell>
+                <TableCell>{blog._id}</TableCell>
                 <TableCell>{truncateText(blog.title)}</TableCell>
                 <TableCell>{truncateText(blog.description)}</TableCell>
                 <TableCell>
@@ -313,7 +336,7 @@ const BlogsTable = () => {
                     onClick={() => openEditModal(blog)}
                     style={{ marginRight: "10px" }}
                   >
-                    Edit Blog
+                    Sửa Blog
                   </Button>
                   <Button
                     variant="outlined"
@@ -321,7 +344,7 @@ const BlogsTable = () => {
                     size="small"
                     onClick={() => handleDeleteBlog(blog._id)}
                   >
-                    Delete Blog
+                    Xoá Blog
                   </Button>
                 </TableCell>
               </TableRow>
@@ -346,6 +369,24 @@ const BlogsTable = () => {
         setEditingBlog={setEditingBlog}
         handleEditBlog={handleEditBlog}
         handleImageChange={handleImageChange}
+      />
+
+      <ReactPaginate
+        previousLabel="«"
+        nextLabel="»"
+        breakLabel="..."
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName="pagination justify-content-center mt-4"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        activeClassName="active"
       />
     </div>
   );

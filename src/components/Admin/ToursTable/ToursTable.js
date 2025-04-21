@@ -19,6 +19,7 @@ import EditTourModal from "./EditTourModal";
 import { Delete, Edit } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import { toast } from "react-toastify";
+import ReactPaginate from "react-paginate";
 
 const ToursTable = () => {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -147,13 +148,11 @@ const ToursTable = () => {
   };
 
   const handleDeleteTour = async (tourId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this tour?"
-    );
+    const confirmDelete = window.confirm("Bạn có chắn chắn muốn xoá?");
     if (!confirmDelete) return;
     try {
       const response = await fetch(`${BASE_URL}/tours/${tourId}`, {
-        method: "PUT",
+        method: "DELETE",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
@@ -258,6 +257,18 @@ const ToursTable = () => {
     );
   });
 
+  //phân trang
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const offset = currentPage * itemsPerPage;
+  const currentItems = filteredTours.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(filteredTours.length / itemsPerPage);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -265,7 +276,7 @@ const ToursTable = () => {
     <Box>
       <Box display="flex" gap={3} mb={3}>
         <TextField
-          label="Search by Title, City or Address"
+          label="Nhập địa điểm cần tìm"
           variant="outlined"
           fullWidth
           value={searchQuery}
@@ -279,7 +290,7 @@ const ToursTable = () => {
           }}
         />
         <Button variant="contained" color="primary" onClick={toggleModal}>
-          Add Tour
+          Thêm tour
         </Button>
       </Box>
       <TableContainer>
@@ -295,7 +306,18 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Avatar
+                Ảnh
+              </TableCell>
+              <TableCell
+                sx={{
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  paddingRight: 1,
+                  "&:hover": { color: "primary.main" },
+                  whiteSpace: "nowrap", // Prevent wrapping
+                }}
+              >
+                ID
               </TableCell>
               <TableCell
                 onClick={() => sortTours("title")}
@@ -307,7 +329,7 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Title {renderSortIcon("title")}
+                Tên tour du lịch {renderSortIcon("title")}
               </TableCell>
               <TableCell
                 onClick={() => sortTours("city")}
@@ -319,7 +341,7 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                City {renderSortIcon("city")}
+                Thành phố {renderSortIcon("city")}
               </TableCell>
               <TableCell
                 onClick={() => sortTours("address")}
@@ -331,7 +353,7 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Address {renderSortIcon("address")}
+                Địa chi {renderSortIcon("address")}
               </TableCell>
               <TableCell
                 onClick={() => sortTours("day")}
@@ -343,7 +365,7 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Day {renderSortIcon("day")}
+                Số ngày {renderSortIcon("day")}
               </TableCell>
               <TableCell
                 onClick={() => sortTours("desc")}
@@ -355,7 +377,7 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Description {renderSortIcon("desc")}
+                Mô tả {renderSortIcon("desc")}
               </TableCell>
               <TableCell
                 onClick={() => sortTours("price")}
@@ -367,7 +389,7 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Price {renderSortIcon("price")}
+                Giá {renderSortIcon("price")}
               </TableCell>
               <TableCell
                 onClick={() => sortTours("maxGroupSize")}
@@ -379,7 +401,7 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Max Group Size {renderSortIcon("maxGroupSize")}
+                Số người tối đa {renderSortIcon("maxGroupSize")}
               </TableCell>
               <TableCell
                 onClick={() => sortTours("featured")}
@@ -391,7 +413,7 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Featured {renderSortIcon("featured")}
+                Tour nổi bật {renderSortIcon("featured")}
               </TableCell>
               <TableCell
                 sx={{
@@ -402,13 +424,13 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Actions
+                Hành động
               </TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {filteredTours?.map((tour) => (
+            {currentItems?.map((tour) => (
               <TableRow key={tour._id}>
                 <TableCell>
                   <img
@@ -417,7 +439,8 @@ const ToursTable = () => {
                     style={{ width: 50, height: 50, borderRadius: "50%" }}
                   />
                 </TableCell>
-                <TableCell>{truncateText(tour.title)}</TableCell>
+                <TableCell>{truncateText(tour._id)}</TableCell>
+                <TableCell>{tour.title}</TableCell>
                 <TableCell>{truncateText(tour.city)}</TableCell>
                 <TableCell>{truncateText(tour.address)}</TableCell>
                 <TableCell>{truncateText(tour.day)}</TableCell>
@@ -426,9 +449,9 @@ const ToursTable = () => {
                 <TableCell>{truncateText(tour.maxGroupSize)}</TableCell>
                 <TableCell>
                   {tour.featured ? (
-                    <Typography color="green">Yes</Typography>
+                    <Typography color="green">Có</Typography>
                   ) : (
-                    <Typography color="red">No</Typography>
+                    <Typography color="red">Không</Typography>
                   )}
                 </TableCell>
                 <TableCell>
@@ -466,6 +489,25 @@ const ToursTable = () => {
         setEditingTour={setEditingTour}
         handleEditTour={handleEditTour}
         handlePhotoChange={handlePhotoChange}
+      />
+
+      {/* Phân trang */}
+      <ReactPaginate
+        previousLabel="«"
+        nextLabel="»"
+        breakLabel="..."
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName="pagination justify-content-center mt-4"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        activeClassName="active"
       />
     </Box>
   );

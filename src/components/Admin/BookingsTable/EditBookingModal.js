@@ -20,12 +20,12 @@ const EditBookingModal = ({
 }) => {
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
-      <ModalHeader toggle={toggle}>Edit Booking</ModalHeader>
+      <ModalHeader toggle={toggle}>Sửa đơn đặt</ModalHeader>
       <ModalBody>
         {editingBooking && (
           <Form>
             <FormGroup>
-              <Label for="fullName">Full Name</Label>
+              <Label for="fullName">Tên người đặt</Label>
               <Input
                 type="text"
                 name="fullName"
@@ -40,7 +40,7 @@ const EditBookingModal = ({
               />
             </FormGroup>
             <FormGroup>
-              <Label for="phone">Phone</Label>
+              <Label for="phone">Số điện thoại</Label>
               <Input
                 type="text"
                 name="phone"
@@ -55,7 +55,7 @@ const EditBookingModal = ({
               />
             </FormGroup>
             <FormGroup>
-              <Label for="bookAt">Booking Date</Label>
+              <Label for="bookAt">Ngày đi</Label>
               <Input
                 type="date"
                 name="bookAt"
@@ -71,7 +71,7 @@ const EditBookingModal = ({
               />
             </FormGroup>
             <FormGroup>
-              <Label for="isPayment">Payment</Label>
+              <Label for="isPayment">Thanh toán</Label>
               <Input
                 type="select"
                 name="isPayment"
@@ -84,12 +84,12 @@ const EditBookingModal = ({
                   })
                 }
               >
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
+                <option value={true}>Đã thanh toán</option>
+                <option value={false}>Chưa thanh toán</option>
               </Input>
             </FormGroup>
             <FormGroup>
-              <Label for="status">Status</Label>
+              <Label for="status">Trạng thái</Label>
               <Input
                 type="select"
                 name="status"
@@ -102,9 +102,9 @@ const EditBookingModal = ({
                   })
                 }
               >
-                <option value="pending">Pending</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="completed">Completed</option>
+                <option value="pending">Chờ xác nhận</option>
+                <option value="confirmed">Đã xác nhận</option>
+                <option value="completed">Hoàn thành</option>
               </Input>
             </FormGroup>
           </Form>
@@ -112,10 +112,10 @@ const EditBookingModal = ({
       </ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={handleEditBooking}>
-          Save
+          Lưu
         </Button>
         <Button color="secondary" onClick={toggle}>
-          Cancel
+          Huỷ
         </Button>
       </ModalFooter>
     </Modal>

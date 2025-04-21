@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { TextField, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
+import {
+  TextField,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 import { BASE_URL } from "../../../utils/config";
 import useFetch from "../../../hooks/useFetch";
 import { Line, Bar } from "react-chartjs-2";
@@ -157,7 +163,7 @@ const Statistical = () => {
       },
       title: {
         display: true,
-        text: "Total revenue based on tour booking date",
+        text: "Tổng doanh thu dựa trên ngày đặt tour",
       },
     },
     scales: {
@@ -177,7 +183,7 @@ const Statistical = () => {
       y: {
         title: {
           display: true,
-          text: "Total Price (VND)",
+          text: "Tổng tiền (VND)",
         },
         min: 0, // Đảm bảo trục y luôn bắt đầu từ 0
         ticks: {
@@ -195,14 +201,14 @@ const Statistical = () => {
       },
       title: {
         display: true,
-        text: "Number of tours according to tour booking date",
+        text: "Số lượng tour theo ngày đặt",
       },
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: "Tour Name",
+          text: "Tour",
         },
         ticks: {
           // This ensures the labels are displayed horizontally
@@ -214,7 +220,7 @@ const Statistical = () => {
       y: {
         title: {
           display: true,
-          text: "Bookings",
+          text: "Số đơn",
         },
         beginAtZero: true, // Đảm bảo trục y luôn bắt đầu từ 0
         min: 0,
@@ -232,7 +238,7 @@ const Statistical = () => {
       {/* Year and Month Selectors */}
       <div className="d-flex gap-3 mb-4">
         <div>
-          <InputLabel htmlFor="yearSelect">Year:</InputLabel>
+          <InputLabel htmlFor="yearSelect">Năm:</InputLabel>
           <FormControl fullWidth>
             <Select
               value={selectedYear}
@@ -252,7 +258,7 @@ const Statistical = () => {
           </FormControl>
         </div>
         <div>
-          <InputLabel htmlFor="monthSelect">Month:</InputLabel>
+          <InputLabel htmlFor="monthSelect">Tháng:</InputLabel>
           <FormControl fullWidth>
             <Select
               value={selectedMonth || ""}
@@ -262,10 +268,12 @@ const Statistical = () => {
               id="monthSelect"
               label="Month"
             >
-              <MenuItem value="">All</MenuItem>
+              <MenuItem value="">Tất cả</MenuItem>
               {[...Array(12)].map((_, i) => (
                 <MenuItem key={i + 1} value={i + 1}>
-                  {new Date(0, i).toLocaleDateString("vi-VN", { month: "long" })}
+                  {new Date(0, i).toLocaleDateString("vi-VN", {
+                    month: "long",
+                  })}
                 </MenuItem>
               ))}
             </Select>
@@ -276,11 +284,11 @@ const Statistical = () => {
       {/* Display Charts */}
       <div style={{ marginBottom: "20px" }}>
         <h5>
-          Total Price in {selectedMonth ? `Month ${selectedMonth},` : "Year"}{" "}
+          Tài chính trong {selectedMonth ? `tháng ${selectedMonth},` : "năm"}{" "}
           {selectedYear}
         </h5>
         <h5 style={{ marginTop: "10px" }}>
-          Total Price:{" "}
+          Tổng tiền:{" "}
           {totalDailyPrice
             .toLocaleString("vi-VN", {
               style: "currency",
@@ -299,10 +307,15 @@ const Statistical = () => {
       {/* Bar chart for bookings per tour */}
       <div style={{ marginBottom: "20px", width: "100%", height: "500px" }}>
         <h5>
-          Bookings Per Tour in{" "}
-          {selectedMonth ? `Month ${selectedMonth},` : "Year"} {selectedYear}
+          Số đơn đặt tour trong{" "}
+          {selectedMonth ? `tháng ${selectedMonth},` : "năm"} {selectedYear}
         </h5>
-        <Bar data={tourChartData} options={barOptions} height={300} width={800} />
+        <Bar
+          data={tourChartData}
+          options={barOptions}
+          height={300}
+          width={800}
+        />
       </div>
     </div>
   );

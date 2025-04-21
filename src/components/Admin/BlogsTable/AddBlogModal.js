@@ -22,38 +22,38 @@ const AddBlogModal = ({
 }) => {
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
-      <ModalHeader toggle={toggle}>Add New Blog</ModalHeader>
+      <ModalHeader toggle={toggle}>Thêm bài viết mới</ModalHeader>
       <ModalBody>
         <Form>
           <FormGroup>
-            <Label for="title">Title</Label>
+            <Label for="title">Tiêu đề</Label>
             <Input
               type="text"
               name="title"
               id="title"
-            //   value={newPost.title}
+              //   value={newPost.title}
               onChange={handleInputChange}
             />
           </FormGroup>
           <FormGroup>
-            <Label for="image">Image</Label>
+            <Label for="image">Ảnh</Label>
             <Input
               type="file"
               name="image"
               id="image"
               accept="image/*"
-            //   value={newPost.image}
+              //   value={newPost.image}
               // onChange={handlePhotoChange}
               onChange={(e) => handleImageChange(e, setNewBlog)}
             />
           </FormGroup>
           <FormGroup>
-            <Label for="description">Description</Label>
+            <Label for="description">Nội dung</Label>
             <Input
               type="textarea"
               name="description"
               id="description"
-            //   value={newPost.description}
+              //   value={newPost.description}
               onChange={handleInputChange}
             />
           </FormGroup>
@@ -61,10 +61,10 @@ const AddBlogModal = ({
       </ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={handleAddBlog}>
-          Save
+          Lưu
         </Button>
         <Button color="secondary" onClick={toggle}>
-          Cancel
+          Huỷ
         </Button>
       </ModalFooter>
     </Modal>

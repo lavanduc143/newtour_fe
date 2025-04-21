@@ -21,24 +21,24 @@ const EditBlogModal = ({
 }) => {
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
-      <ModalHeader toggle={toggle}>Edit Blog</ModalHeader>
+      <ModalHeader toggle={toggle}>Sửa Blog</ModalHeader>
       <ModalBody>
         {editingBlog && (
           <Form>
             <FormGroup>
-              <Label for="title">Title</Label>
+              <Label for="title">Tiêu đề</Label>
               <Input
                 type="text"
                 name="title"
                 id="title"
                 value={editingBlog?.title}
                 onChange={(e) =>
-                    setEditingBlog({ ...editingBlog, title: e.target.value })
+                  setEditingBlog({ ...editingBlog, title: e.target.value })
                 }
               />
             </FormGroup>
             <FormGroup>
-              <Label for="image">Imgae</Label>
+              <Label for="image">Ảnh</Label>
               <Input
                 type="file"
                 name="image"
@@ -48,14 +48,17 @@ const EditBlogModal = ({
               />
             </FormGroup>
             <FormGroup>
-              <Label for="description">Description</Label>
+              <Label for="description">Nội dung</Label>
               <Input
                 type="textarea"
                 name="description"
                 id="description"
                 value={editingBlog?.description}
                 onChange={(e) =>
-                    setEditingBlog({ ...editingBlog, description: e.target.value })
+                  setEditingBlog({
+                    ...editingBlog,
+                    description: e.target.value,
+                  })
                 }
               />
             </FormGroup>
@@ -64,10 +67,10 @@ const EditBlogModal = ({
       </ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={handleEditBlog}>
-          Save
+          Lưu
         </Button>
         <Button color="secondary" onClick={toggle}>
-          Cancel
+          Huỷ
         </Button>
       </ModalFooter>
     </Modal>

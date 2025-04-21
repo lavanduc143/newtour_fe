@@ -30,9 +30,13 @@ import HotelStatistical from "./HotelStatistical/HotelStatistical";
 import { BASE_URL } from "../../utils/config";
 import { toast } from "react-toastify";
 
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import MenuIcon from "@mui/icons-material/Menu";
+
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("Manage users");
   const [openSections, setOpenSections] = useState({});
+  const [open, setOpen] = useState(true);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { dispatch } = useContext(AuthContext);
@@ -43,6 +47,10 @@ const Admin = () => {
 
   const toggleSection = (section) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const toggleDrawer = (newOpen) => {
+    setOpen(newOpen);
   };
 
   const handleTabClick = (tab) => {
@@ -127,12 +135,16 @@ const Admin = () => {
     <Box display="flex" height="100vh">
       {/* Sidebar */}
       <Drawer
+        variant="persistent"
+        anchor="left"
+        open={open}
         sx={{
           width: 240,
           flexShrink: 0,
           backgroundColor: "#333",
           color: "#fff",
           boxShadow: 3,
+          display: open ? "block" : "none",
           "& .MuiDrawer-paper": {
             width: 240,
             boxSizing: "border-box",
@@ -140,8 +152,6 @@ const Admin = () => {
             color: "#fff",
           },
         }}
-        variant="permanent"
-        anchor="left"
       >
         <Box p={2} display="flex" alignItems="center">
           <img
@@ -183,16 +193,16 @@ const Admin = () => {
                 onClick={() => handleTabClick("Manage users")}
                 sx={{ ...getListItemStyles("Manage users"), pl: 4 }} // Sử dụng getListItemStyles
               >
-                <ListItemText primary="Manage users" />
+                <ListItemText primary="Quản lý tài khoản" />
               </ListItem>
-              <ListItem
+              {/* <ListItem
                 button
                 onClick={() => handleTabClick("Restore users")}
                 // sx={getListItemStyles("Restore users")}
                 sx={{ ...getListItemStyles("Restore users"), pl: 4 }} // Sử dụng getListItemStyles
               >
                 <ListItemText primary="Restore users" />
-              </ListItem>
+              </ListItem> */}
             </List>
           </Collapse>
 
@@ -213,16 +223,16 @@ const Admin = () => {
                 // sx={getListItemStyles("Manage tours")} // Sử dụng getListItemStyles
                 sx={{ ...getListItemStyles("Manage tours"), pl: 4 }} // Sử dụng getListItemStyles
               >
-                <ListItemText primary="Manage tours" />
+                <ListItemText primary="Quản lý tour" />
               </ListItem>
-              <ListItem
+              {/* <ListItem
                 button
                 onClick={() => handleTabClick("Restore tours")}
                 // sx={getListItemStyles("Restore tours")} // Sử dụng getListItemStyles
                 sx={{ ...getListItemStyles("Restore tours"), pl: 4 }} // Sử dụng getListItemStyles
               >
                 <ListItemText primary="Restore tours" />
-              </ListItem>
+              </ListItem> */}
             </List>
           </Collapse>
 
@@ -243,21 +253,21 @@ const Admin = () => {
                 // sx={getListItemStyles("Manage blogs")} // Sử dụng getListItemStyles
                 sx={{ ...getListItemStyles("Manage blogs"), pl: 4 }} // Sử dụng getListItemStyles
               >
-                <ListItemText primary="Manage blogs" />
+                <ListItemText primary="Quản lý bài viết" />
               </ListItem>
-              <ListItem
+              {/* <ListItem
                 button
                 onClick={() => handleTabClick("Restore blogs")}
                 // sx={getListItemStyles("Restore blogs")} // Sử dụng getListItemStyles
                 sx={{ ...getListItemStyles("Restore blogs"), pl: 4 }} // Sử dụng getListItemStyles
               >
                 <ListItemText primary="Restore blogs" />
-              </ListItem>
+              </ListItem> */}
             </List>
           </Collapse>
 
           {/* Hotel Section */}
-          <ListItem
+          {/* <ListItem
             button
             onClick={() => toggleSection("Hotel")}
             sx={{ padding: "10px 20px" }}
@@ -284,7 +294,7 @@ const Admin = () => {
                 <ListItemText primary="Restore hotels" />
               </ListItem>
             </List>
-          </Collapse>
+          </Collapse> */}
 
           {/* Statistics Section */}
           <ListItem
@@ -292,7 +302,7 @@ const Admin = () => {
             onClick={() => toggleSection("Statistics")}
             sx={{ padding: "10px 20px" }}
           >
-            <ListItemText primary="Statistics" />
+            <ListItemText primary="Booking" />
             {openSections.Statistics ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={openSections.Statistics} timeout="auto" unmountOnExit>
@@ -303,7 +313,7 @@ const Admin = () => {
                 // sx={getListItemStyles("Manage bookings")} // Sử dụng getListItemStyles
                 sx={{ ...getListItemStyles("Manage bookings"), pl: 4 }} // Sử dụng getListItemStyles
               >
-                <ListItemText primary="Manage bookings" />
+                <ListItemText primary="Quản lý booking" />
               </ListItem>
               <ListItem
                 button
@@ -311,16 +321,16 @@ const Admin = () => {
                 // sx={getListItemStyles("Tour statistics")} // Sử dụng getListItemStyles
                 sx={{ ...getListItemStyles("Tour statistics"), pl: 4 }} // Sử dụng getListItemStyles
               >
-                <ListItemText primary="Tour statistics" />
+                <ListItemText primary="Thống kê" />
               </ListItem>
-              <ListItem
+              {/* <ListItem
                 button
                 onClick={() => handleTabClick("Hotel statistics")}
                 // sx={getListItemStyles("Hotel statistics")} // Sử dụng getListItemStyles
                 sx={{ ...getListItemStyles("Hotel statistics"), pl: 4 }} // Sử dụng getListItemStyles
               >
                 <ListItemText primary="Hotel statistics" />
-              </ListItem>
+              </ListItem> */}
             </List>
           </Collapse>
 
@@ -328,9 +338,9 @@ const Admin = () => {
           <ListItem
             button
             onClick={handleOpenLogoutDialog}
-            sx={{ padding: "10px 20px" }}
+            sx={{ padding: "10px 20px", cursor: "pointer" }}
           >
-            <ListItemText primary="Logout" />
+            <ListItemText primary="Đăng xuất" />
           </ListItem>
         </List>
       </Drawer>
@@ -341,13 +351,11 @@ const Admin = () => {
         aria-labelledby="logout-dialog-title"
         aria-describedby="logout-dialog-description"
       >
-        <DialogTitle id="logout-dialog-title">Confirm Logout</DialogTitle>
-        <DialogContent>
-          Are you sure you want to log out of your account?
-        </DialogContent>
+        <DialogTitle id="logout-dialog-title">Xác nhận</DialogTitle>
+        <DialogContent>Bạn có chắc muốn đăng xuất?</DialogContent>
         <DialogActions>
           <Button onClick={handleCloseLogoutDialog} color="error">
-            Cancel
+            Huỷ
           </Button>
           <Button
             onClick={() => {
@@ -357,24 +365,27 @@ const Admin = () => {
             color="primary"
             autoFocus
           >
-            Logout
+            Xác nhận
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Content */}
       <Box component="main" sx={{ flexGrow: 1, bgcolor: "#f5f5f5", p: 3 }}>
+        <Button onClick={() => setOpen(!open)}>
+          {open ? <ArrowBackIcon /> : <MenuIcon />}
+        </Button>
         <Typography variant="h4" align="center" gutterBottom>
-          {activeTab === "Manage users" && "Manage user accounts in the system"}
+          {activeTab === "Manage users" && "Quản lý tài khoản"}
           {activeTab === "Restore users" && "Manage deleted user accounts"}
-          {activeTab === "Manage tours" && "Manage tours in the system"}
+          {activeTab === "Manage tours" && "Quản lý tour du lịch"}
           {activeTab === "Restore tours" && "Manage deleted tours"}
-          {activeTab === "Manage blogs" && "Manage blogs in the system"}
+          {activeTab === "Manage blogs" && "Quản lý bài viết"}
           {activeTab === "Restore blogs" && "Manage deleted blogs"}
           {activeTab === "Manage hotels" && "Manage hotels in the system"}
           {activeTab === "Restore hotels" && "Manage deleted hotels"}
-          {activeTab === "Manage bookings" && "Manage bookings in the system"}
-          {activeTab === "Tour statistics" && "Revenue management"}
+          {activeTab === "Manage bookings" && "Quản lý booking"}
+          {activeTab === "Tour statistics" && "Thống kê"}
           {activeTab === "Hotel statistics" && "Hotel booking statistics"}
         </Typography>
         {renderContent()}

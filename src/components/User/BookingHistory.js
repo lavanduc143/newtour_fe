@@ -4,10 +4,12 @@ import useFetch from "../../hooks/useFetch";
 import { Table, Container, Row, Col, Input } from "reactstrap";
 import "./booking-history.css";
 import NewSletter from "../../shared/NewSletter";
+import { toast } from "react-toastify";
 
 const BookingHistory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "asc" });
+  const [bookings, setBookings] = useState([]);
 
   const {
     data: bookingData,
@@ -16,7 +18,9 @@ const BookingHistory = () => {
   } = useFetch(`${BASE_URL}/bookings/user/history`);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (bookingData) {
+      setBookings(bookingData);
+    }
   }, [bookingData]);
 
   if (loading) return <div>Loading...</div>;
@@ -38,7 +42,7 @@ const BookingHistory = () => {
       sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
     setSortConfig({ key, direction });
 
-    bookingData?.sort((a, b) => {
+    bookings?.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
 
@@ -68,7 +72,7 @@ const BookingHistory = () => {
   };
 
   // Filter bookings based on search query
-  const filteredBookings = bookingData?.filter((booking) => {
+  const filteredBookings = bookings?.filter((booking) => {
     const searchTerm = searchQuery.toLowerCase();
     return (
       booking.userEmail.toLowerCase().includes(searchTerm) ||
@@ -109,6 +113,34 @@ const BookingHistory = () => {
     }
   };
 
+  const handleDeleteBooking = async (bookingId) => {
+    const confirmDelete = window.confirm("Bạn có chắn chắn muốn huỷ tour?");
+
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`${BASE_URL}/bookings/${bookingId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete user");
+      }
+
+      setBookings((prev) =>
+        prev.filter((booking) => booking._id !== bookingId)
+      );
+
+      toast.success("Huỷ tour thành công");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
+
   return (
     <>
       <section>
@@ -116,7 +148,7 @@ const BookingHistory = () => {
           <Row>
             <Col>
               <div className="booking-history-table">
-                <h2 className="table-title">Lịch sử đặt tour</h2>
+                <h2 className="table-title">Lịch Sử Đặt Tour</h2>
                 <div className="d-flex gap-3 mb-3">
                   <Input
                     type="text"
@@ -129,12 +161,12 @@ const BookingHistory = () => {
                 <Table striped hover responsive>
                   <thead>
                     <tr>
-                      <th
+                      {/* <th
                         style={{ color: "black" }}
                         onClick={() => sortBookings("userEmail")}
                       >
                         Email {renderSortIcon("userEmail")}
-                      </th>
+                      </th> */}
                       <th
                         style={{ color: "black" }}
                         onClick={() => sortBookings("fullName")}
@@ -163,7 +195,7 @@ const BookingHistory = () => {
                         style={{ color: "black" }}
                         onClick={() => sortBookings("bookAt")}
                       >
-                        Ngày đặt {renderSortIcon("bookAt")}
+                        Ngày đi {renderSortIcon("bookAt")}
                       </th>
                       <th
                         style={{ color: "black" }}
@@ -173,6 +205,7 @@ const BookingHistory = () => {
                       </th>
                       <th style={{ color: "black" }}>Thanh toán</th>
                       <th style={{ color: "black" }}>Trạng thái</th>
+                      {/* <th style={{ color: "black" }}>Thao tác</th> */}
                     </tr>
                   </thead>
                   <tbody>
@@ -192,7 +225,7 @@ const BookingHistory = () => {
 
                         return (
                           <tr key={booking._id}>
-                            <td>{booking.userEmail}</td>
+                            {/* <td>{booking.userEmail}</td> */}
                             <td>{booking.fullName}</td>
                             <td>{titlePreview(booking.tourName)}</td>
                             <td>{booking.guestSize}</td>
@@ -211,6 +244,21 @@ const BookingHistory = () => {
                               )}
                             </td>
                             <td>{getStatus(booking.status)}</td>
+                            <td>
+                              {booking.status === "pending" ? (
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-danger"
+                                  onClick={() =>
+                                    handleDeleteBooking(booking._id)
+                                  }
+                                >
+                                  Huỷ tour
+                                </button>
+                              ) : (
+                                <></>
+                              )}
+                            </td>
                           </tr>
                         );
                       })

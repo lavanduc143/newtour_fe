@@ -16,6 +16,7 @@ import useFetch from "../../../hooks/useFetch";
 import AddUserModal from "./AddUserModal";
 import EditUserModal from "./EditUserModal";
 import SearchIcon from "@mui/icons-material/Search";
+import ReactPaginate from "react-paginate";
 
 const UsersTable = () => {
   // Fetch the users data from the API
@@ -78,15 +79,13 @@ const UsersTable = () => {
   };
 
   const handleDeleteUser = async (userId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this user?"
-    );
+    const confirmDelete = window.confirm("Bạn có chắn chắn muốn xoá?");
 
     if (!confirmDelete) return;
 
     try {
       const response = await fetch(`${BASE_URL}/users/${userId}`, {
-        method: "PUT",
+        method: "DELETE", //"PUT sẽ xoá tạm thời"
         headers: {
           "Content-Type": "application/json",
         },
@@ -211,6 +210,18 @@ const UsersTable = () => {
     );
   });
 
+  //phân trang
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const offset = currentPage * itemsPerPage;
+  const currentItems = filteredUsers.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(filteredUsers.length / itemsPerPage);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -218,7 +229,7 @@ const UsersTable = () => {
     <div>
       <div className="d-flex gap-3 mb-3">
         <TextField
-          label="Search by Username or Email"
+          label="Tìm kiếm theo tên tài khoản hoặc email"
           variant="outlined"
           fullWidth
           value={searchQuery}
@@ -237,7 +248,7 @@ const UsersTable = () => {
           color="primary"
           onClick={() => setIsFormVisible((prev) => !prev)}
         >
-          {isFormVisible ? "Hide Form" : "Add User"}
+          {isFormVisible ? "Ẩn" : "Thêm tài khoản"}
         </Button>
       </div>
 
@@ -273,7 +284,18 @@ const UsersTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Avatar
+                Ảnh đại diện
+              </TableCell>
+              <TableCell
+                sx={{
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  paddingRight: 1,
+                  "&:hover": { color: "primary.main" },
+                  whiteSpace: "nowrap", // Prevent wrapping
+                }}
+              >
+                ID
               </TableCell>
               <TableCell
                 onClick={() => sortUsers("username")}
@@ -285,7 +307,7 @@ const UsersTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Username {renderSortIcon("username")}
+                Tên tài khoản {renderSortIcon("username")}
               </TableCell>
               <TableCell
                 onClick={() => sortUsers("email")}
@@ -309,7 +331,7 @@ const UsersTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Role {renderSortIcon("role")}
+                Quyền {renderSortIcon("role")}
               </TableCell>
               <TableCell
                 sx={{
@@ -320,12 +342,12 @@ const UsersTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Actions
+                Hành động
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredUsers?.map((user) => (
+            {currentItems?.map((user) => (
               <TableRow key={user._id}>
                 <TableCell>
                   <img
@@ -338,8 +360,9 @@ const UsersTable = () => {
                     }}
                   />
                 </TableCell>
-                <TableCell>{truncateText(user.username)}</TableCell>
-                <TableCell>{truncateText(user.email)}</TableCell>
+                <TableCell>{user._id}</TableCell>
+                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.email}</TableCell>
                 <TableCell>{user.role}</TableCell>
                 <TableCell>
                   <Button
@@ -349,7 +372,7 @@ const UsersTable = () => {
                     onClick={() => openEditModal(user)}
                     style={{ marginRight: "10px" }}
                   >
-                    Edit User
+                    Sửa tài khoản
                   </Button>
                   <Button
                     variant="outlined"
@@ -357,7 +380,7 @@ const UsersTable = () => {
                     size="small"
                     onClick={() => handleDeleteUser(user._id)}
                   >
-                    Delete User
+                    Xoá tài khoản
                   </Button>
                 </TableCell>
               </TableRow>
@@ -365,6 +388,25 @@ const UsersTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Phân trang */}
+      <ReactPaginate
+        previousLabel="«"
+        nextLabel="»"
+        breakLabel="..."
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName="pagination justify-content-center mt-4"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        activeClassName="active"
+      />
     </div>
   );
 };

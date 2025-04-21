@@ -93,12 +93,12 @@ const AddUserModal = ({
 }) => {
   return (
     <div className="add-user-form mb-4 mt-4">
-      <h2>Add New User</h2>
+      <h2>Thêm tài khoản mới</h2>
       <Form>
         <Row>
           <Col md={6}>
             <FormGroup>
-              <Label for="username">Username</Label>
+              <Label for="username">Tên tài khoản</Label>
               <Input
                 type="text"
                 name="username"
@@ -136,7 +136,7 @@ const AddUserModal = ({
         <Row>
           <Col md={6}>
             <FormGroup>
-              <Label for="password">Password</Label>
+              <Label for="password">Mật khẩu</Label>
               <Input
                 type="password"
                 name="password"
@@ -154,7 +154,7 @@ const AddUserModal = ({
           </Col>
           <Col md={6}>
             <FormGroup>
-              <Label for="role">Role</Label>
+              <Label for="role">Quyền</Label>
               <Input
                 type="select"
                 name="role"
@@ -176,10 +176,10 @@ const AddUserModal = ({
         </Row>
         <div className="form-actions">
           <Button color="primary" onClick={handleAddUser}>
-            Save
+            Lưu
           </Button>{" "}
           <Button color="secondary" onClick={handleCancel}>
-            Cancel
+            Huỷ
           </Button>
         </div>
       </Form>
