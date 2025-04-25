@@ -187,6 +187,8 @@ const BookingsTable = () => {
       return "Chờ xác nhận";
     } else if (status === "confirmed") {
       return "Đã xác nhận";
+    } else if (status === "canceled") {
+      return "Đã huỷ";
     } else {
       return "Hoàn thành";
     }

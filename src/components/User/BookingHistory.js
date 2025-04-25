@@ -108,19 +108,49 @@ const BookingHistory = () => {
       return "Chờ xác nhận";
     } else if (status === "confirmed") {
       return "Đã xác nhận";
+    } else if (status === "canceled") {
+      return "Đã huỷ";
     } else {
       return "Hoàn thành";
     }
   };
 
-  const handleDeleteBooking = async (bookingId) => {
-    const confirmDelete = window.confirm("Bạn có chắn chắn muốn huỷ tour?");
+  // const handleDeleteBooking = async (bookingId) => {
+  //   const confirmDelete = window.confirm("Bạn có chắn chắn muốn huỷ tour?");
 
-    if (!confirmDelete) return;
+  //   if (!confirmDelete) return;
+
+  //   try {
+  //     const response = await fetch(${BASE_URL}/bookings/${bookingId}, {
+  //       method: "DELETE",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       credentials: "include",
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to delete user");
+  //     }
+
+  //     setBookings((prev) =>
+  //       prev.filter((booking) => booking._id !== bookingId)
+  //     );
+
+  //     toast.success("Huỷ tour thành công");
+  //   } catch (error) {
+  //     console.error("Error deleting user:", error);
+  //   }
+  // }
+
+  const handleCancelBooking = async (bookingId) => {
+    const confirmCancel = window.confirm("Bạn có chắc chắn muốn huỷ tour?");
+
+    if (!confirmCancel) return;
 
     try {
-      const response = await fetch(`${BASE_URL}/bookings/${bookingId}`, {
-        method: "DELETE",
+      const response = await fetch(`${BASE_URL}/bookings/cancel/${bookingId}`, {
+        method: "PUT", // hoặc PATCH cũng được
         headers: {
           "Content-Type": "application/json",
         },
@@ -128,16 +158,20 @@ const BookingHistory = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete user");
+        throw new Error("Failed to cancel booking");
       }
-
       setBookings((prev) =>
-        prev.filter((booking) => booking._id !== bookingId)
+        prev.map((booking) =>
+          booking._id === bookingId
+            ? { ...booking, status: "canceled" }
+            : booking
+        )
       );
 
       toast.success("Huỷ tour thành công");
     } catch (error) {
-      console.error("Error deleting user:", error);
+      console.error("Error cancelling booking:", error);
+      toast.error("Huỷ tour thất bại");
     }
   };
 
@@ -250,7 +284,7 @@ const BookingHistory = () => {
                                   type="button"
                                   class="btn btn-outline-danger"
                                   onClick={() =>
-                                    handleDeleteBooking(booking._id)
+                                    handleCancelBooking(booking._id)
                                   }
                                 >
                                   Huỷ tour

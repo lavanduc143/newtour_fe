@@ -16,10 +16,11 @@ import { BASE_URL } from "../../../utils/config";
 import useFetch from "../../../hooks/useFetch";
 import AddTourModal from "./AddTourModal";
 import EditTourModal from "./EditTourModal";
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, Edit, Visibility } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
+import BookingListModal from "../ModalViewBookings/ModalViewBookings";
 
 const ToursTable = () => {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -45,6 +46,20 @@ const ToursTable = () => {
   const [editModal, setEditModal] = useState(false);
   const [editingTour, setEditingTour] = useState(null);
   const [originalTour, setOriginalTour] = useState(null);
+
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [selectedTourId, setSelectedTourId] = useState(null);
+
+  const handleOpenViewModal = (tourId) => {
+    setSelectedTourId(tourId);
+    setViewModalOpen(true);
+  };
+
+  const handleCloseViewModal = () => {
+    setViewModalOpen(false);
+    setSelectedTourId(null);
+  };
+
   const openEditModal = (tour) => {
     setOriginalTour(tour); // Lưu bản sao dữ liệu gốc
     setEditingTour(tour); // Lưu thông tin người dùng vào state
@@ -467,6 +482,9 @@ const ToursTable = () => {
                   >
                     <Delete />
                   </IconButton>
+                  <IconButton onClick={() => handleOpenViewModal(tour._id)}>
+                    <Visibility />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
@@ -489,6 +507,12 @@ const ToursTable = () => {
         setEditingTour={setEditingTour}
         handleEditTour={handleEditTour}
         handlePhotoChange={handlePhotoChange}
+      />
+
+      <BookingListModal
+        open={viewModalOpen}
+        onClose={handleCloseViewModal}
+        tourId={selectedTourId}
       />
 
       {/* Phân trang */}
