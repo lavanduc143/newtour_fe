@@ -71,26 +71,44 @@ const Header = () => {
   };
 
   // Sticky header functionality
+  // useEffect(() => {
+  //   const stickyheaderFunc = () => {
+  //     if (headerRef.current) {
+  //       window.addEventListener("scroll", () => {
+  //         if (
+  //           document.body.scrollTop > 80 ||
+  //           document.documentElement.scrollTop > 80
+  //         ) {
+  //           headerRef.current.classList.add("sticky__header");
+  //         } else {
+  //           headerRef.current.classList.remove("sticky__header");
+  //         }
+  //       });
+  //     }
+  //   };
+
+  //   // stickyheaderFunc();
+  //   // Attach the event listener
+  //   window.addEventListener("scroll", stickyheaderFunc);
+  //   return () => window.removeEventListener("scroll", stickyheaderFunc);
+  // }, []);
+
   useEffect(() => {
-    const stickyheaderFunc = () => {
-      if (headerRef.current) {
-        window.addEventListener("scroll", () => {
-          if (
-            document.body.scrollTop > 80 ||
-            document.documentElement.scrollTop > 80
-          ) {
-            headerRef.current.classList.add("sticky__header");
-          } else {
-            headerRef.current.classList.remove("sticky__header");
-          }
-        });
+    const handleScroll = () => {
+      if (!headerRef.current) return;
+
+      if (
+        document.body.scrollTop > 80 ||
+        document.documentElement.scrollTop > 80
+      ) {
+        headerRef.current.classList.add("sticky__header");
+      } else {
+        headerRef.current.classList.remove("sticky__header");
       }
     };
 
-    // stickyheaderFunc();
-    // Attach the event listener
-    window.addEventListener("scroll", stickyheaderFunc);
-    return () => window.removeEventListener("scroll", stickyheaderFunc);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Handle screen resize

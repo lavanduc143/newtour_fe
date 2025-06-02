@@ -6,7 +6,7 @@ import "../Tour/tour-card.css";
 import calculateAvgRating from "../../utils/avgRating";
 
 const TourFeatured = ({ tour }) => {
-  const { _id, title, city, photo, price, featured, reviews } = tour;
+  const { _id, title, city, photo, price, featured, reviews, status } = tour;
 
   const { avgRating, totalRating } = calculateAvgRating(reviews);
   const formattedPrice = price.toLocaleString("vi-VN");
@@ -17,7 +17,7 @@ const TourFeatured = ({ tour }) => {
 
   return (
     <div to={`/tours/${_id}`} className="tour__card">
-      <Link to={`/tours/${_id}`} className="tour__card">
+      <div className="tour__card">
         <Card>
           <div className="tour__img">
             <img src={photo} alt="tour-img" />
@@ -56,13 +56,19 @@ const TourFeatured = ({ tour }) => {
               </button> */}
             </div>
             <div>
-              <button className="btn booking__btn">
-                <Link to={`/tours/${_id}`}>Đặt Ngay</Link>
-              </button>
+              {status === "available" ? (
+                <Link to={`/tours/${_id}`}>
+                  <button className="btn booking__btn">Đặt ngay</button>
+                </Link>
+              ) : (
+                <button className="btn booking__btn " disabled>
+                  <Link to={`/tours/${_id}`}>Tạm hết chỗ</Link>
+                </button>
+              )}
             </div>
           </CardBody>
         </Card>
-      </Link>
+      </div>
     </div>
   );
 };

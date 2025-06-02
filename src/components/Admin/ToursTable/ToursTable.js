@@ -80,10 +80,9 @@ const ToursTable = () => {
     // Validate fields
     const { day, price, maxGroupSize } = newTour;
     const errors = [];
-    if (day < 1) errors.push("Day must be greater than or equal to 1.");
-    if (price < 1) errors.push("Price must be greater than or equal to 1.");
-    if (maxGroupSize < 1)
-      errors.push("Max Group Size must be greater than or equal to 1.");
+    if (day < 1) errors.push("Ngày phải lớn hơn hoặc bằng 1.");
+    if (price < 1) errors.push("Giá phải lớn hơn hoặc bằng 1.");
+    if (maxGroupSize < 1) errors.push("Số người phải lớn hơn hoặc bằng 1");
     if (errors.length > 0) {
       //alert(errors.join("\n")); // Hiển thị tất cả các lỗi, mỗi lỗi trên một dòng.
       toast.error(errors.join("\n"));
@@ -419,7 +418,6 @@ const ToursTable = () => {
                 Số người tối đa {renderSortIcon("maxGroupSize")}
               </TableCell>
               <TableCell
-                onClick={() => sortTours("featured")}
                 sx={{
                   cursor: "pointer",
                   fontWeight: "bold",
@@ -428,7 +426,19 @@ const ToursTable = () => {
                   whiteSpace: "nowrap", // Prevent wrapping
                 }}
               >
-                Tour nổi bật {renderSortIcon("featured")}
+                Tour nổi bật
+              </TableCell>
+
+              <TableCell
+                sx={{
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  paddingRight: 1,
+                  "&:hover": { color: "primary.main" },
+                  whiteSpace: "nowrap", // Prevent wrapping
+                }}
+              >
+                Trạng thái
               </TableCell>
               <TableCell
                 sx={{
@@ -467,6 +477,13 @@ const ToursTable = () => {
                     <Typography color="green">Có</Typography>
                   ) : (
                     <Typography color="red">Không</Typography>
+                  )}
+                </TableCell>
+                <TableCell>
+                  {tour.status === "available" ? (
+                    <Typography color="green">Còn trống</Typography>
+                  ) : (
+                    <Typography color="red">Hết chỗ</Typography>
                   )}
                 </TableCell>
                 <TableCell>

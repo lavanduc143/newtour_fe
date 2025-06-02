@@ -114,6 +114,7 @@
   cursor: pointer;
   padding: 0.2rem 0.5rem !important;
   width: 100%;
+  color: white !important;
 }
 
 .booking__btn a {

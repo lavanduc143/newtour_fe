@@ -143,6 +143,21 @@ const EditTourModal = ({
                 <option value={true}>Có</option>
               </Input>
             </FormGroup>
+            <FormGroup>
+              <Label for="status">Trạng thái</Label>
+              <Input
+                type="select"
+                name="status"
+                id="status"
+                value={editingTour?.status} // Hiển thị giá trị hiện tại
+                onChange={(e) =>
+                  setEditingTour({ ...editingTour, status: e.target.value })
+                }
+              >
+                <option value={"available"}>Còn trống</option>
+                <option value={"unavailable"}>Hết chỗ</option>
+              </Input>
+            </FormGroup>
           </Form>
         )}
       </ModalBody>
