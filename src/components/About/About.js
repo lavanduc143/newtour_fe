@@ -188,7 +188,7 @@ const About = () => {
                     <p>Số giấy phép kinh doanh: 1111111111</p>
                     <p>Cấp bởi: Sở Kế hoạch và Đầu tư TP. Hà Nội</p>
                     <p>
-                      <strong>Địa chỉ:</strong>Minh Khai, Bắc Từ Liêm, TP. Hà
+                      <strong>Địa chỉ: </strong>Minh Khai, Bắc Từ Liêm, TP. Hà
                       Nội
                     </p>
                     <p>

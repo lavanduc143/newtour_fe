@@ -17,6 +17,7 @@ import AddUserModal from "./AddUserModal";
 import EditUserModal from "./EditUserModal";
 import SearchIcon from "@mui/icons-material/Search";
 import ReactPaginate from "react-paginate";
+import { toast } from "react-toastify";
 
 const UsersTable = () => {
   // Fetch the users data from the API
@@ -61,6 +62,10 @@ const UsersTable = () => {
         body: JSON.stringify(newUser),
       });
 
+      if (responseAdd.ok) {
+        toast.success("Thêm tài khoản thành công");
+      }
+
       if (!responseAdd.ok) {
         const errorData = await responseAdd.json();
         throw new Error(errorData.message || "Failed to add user");
@@ -92,7 +97,7 @@ const UsersTable = () => {
         credentials: "include",
         body: JSON.stringify({ isDelete: true }),
       });
-
+      toast.success("Xoá khoản thành công");
       if (!response.ok) {
         throw new Error("Failed to delete user");
       }
@@ -156,7 +161,7 @@ const UsersTable = () => {
         body: JSON.stringify(updatedFields),
         credentials: "include",
       });
-
+      toast.success("Cập nhật tài khoản thành công");
       if (!response.ok) {
         throw new Error("Failed to update user");
       }

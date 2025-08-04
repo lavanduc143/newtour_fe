@@ -15,6 +15,7 @@ import useFetch from "../../../hooks/useFetch";
 import EditBookingModal from "./EditBookingModal";
 import SearchIcon from "@mui/icons-material/Search";
 import { toast } from "react-toastify";
+import ReactPaginate from "react-paginate";
 
 const BookingsTable = () => {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -23,6 +24,8 @@ const BookingsTable = () => {
     loading,
     error,
   } = useFetch(`${BASE_URL}/bookings`, refreshKey);
+
+  const [currentPage, setCurrentPage] = useState(0);
 
   const [editModal, setEditModal] = useState(false);
   const [editingBooking, setEditingBooking] = useState(null);
@@ -58,7 +61,7 @@ const BookingsTable = () => {
           credentials: "include",
         }
       );
-
+      toast.success("Cập nhật đơn đặt thành công");
       if (!response.ok) {
         throw new Error("Failed to update tour");
       }
@@ -83,7 +86,7 @@ const BookingsTable = () => {
         credentials: "include",
         body: JSON.stringify({ isDelete: true }),
       });
-
+      toast.success("Xoá đơn đặt thành công");
       if (!response.ok) {
         throw new Error("Failed to delete user");
       }
@@ -192,6 +195,17 @@ const BookingsTable = () => {
     } else {
       return "Hoàn thành";
     }
+  };
+
+  //phân trang
+  const itemsPerPage = 5;
+
+  const offset = currentPage * itemsPerPage;
+  const currentItems = filteredBookings.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(filteredBookings.length / itemsPerPage);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
   };
 
   return (
@@ -349,7 +363,7 @@ const BookingsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredBookings?.map((booking) => {
+            {currentItems?.map((booking) => {
               const formattedBookAt = new Date(
                 booking.bookAt
               ).toLocaleDateString("vi-VN", {
@@ -362,7 +376,7 @@ const BookingsTable = () => {
                 <TableRow key={booking._id}>
                   <TableCell>{truncateText(booking.userId)}</TableCell>
                   <TableCell>{truncateText(booking.userEmail)}</TableCell>
-                  <TableCell>{truncateText(booking.tourName)}</TableCell>
+                  <TableCell sx={{ width: 350 }}>{booking.tourName}</TableCell>
                   <TableCell>{truncateText(booking.fullName)}</TableCell>
                   <TableCell>{truncateText(booking.guestSize)}</TableCell>
                   <TableCell>{formattedPhone}</TableCell>
@@ -410,6 +424,24 @@ const BookingsTable = () => {
           handleEditBooking={handleEditBooking}
         />
       )}
+
+      <ReactPaginate
+        previousLabel="«"
+        nextLabel="»"
+        breakLabel="..."
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName="pagination justify-content-center mt-4"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        activeClassName="active"
+      />
     </div>
   );
 };

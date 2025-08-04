@@ -64,6 +64,10 @@ const BlogsTable = () => {
         credentials: "include",
       });
 
+      if (responseAdd.ok) {
+        toast.success("Thêm blog thành công");
+      }
+
       if (!responseAdd.ok) {
         throw new Error("Failed to add blog");
       }
@@ -125,6 +129,7 @@ const BlogsTable = () => {
         credentials: "include",
         body: JSON.stringify({ isDelete: true }),
       });
+      toast.success("Xoá blog thành công");
       if (!response.ok) {
         throw new Error("Failed to delete blog");
       }
@@ -156,7 +161,7 @@ const BlogsTable = () => {
         body: JSON.stringify(updatedFields),
         credentials: "include",
       });
-
+      toast.success("Cập nhật blog thành công");
       if (!response.ok) {
         throw new Error("Failed to update blog");
       }

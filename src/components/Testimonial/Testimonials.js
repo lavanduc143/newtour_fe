@@ -47,13 +47,13 @@ const Testimonials = () => {
     },
     {
       img: ava02,
-      name: "MTP",
+      name: "Hoà Minzy",
       role: "Khách hàng",
       text: "Trải nghiệm không thể tuyệt vời hơn! Mọi thứ đều được chuẩn bị kỹ lưỡng, lịch trình hợp lý.",
     },
     {
       img: ava03,
-      name: "Hoà Minzy",
+      name: "MTP",
       role: "Khách hàng",
       text: "Rất hài lòng với dịch vụ! Từ khâu đặt tour đến lúc trải nghiệm đều rất chuyên nghiệp và tận tâm.",
     },

@@ -71,10 +71,10 @@ const TourDetails = () => {
 
       setIsLiked(!isLiked); // Toggle the like state
       //alert(result.message);
-      toast.error(result.message);
+      toast.success(result.message);
     } catch (err) {
       //alert(err.message);
-      toast.error(err.message);
+      toast.success(err.message);
     }
   };
 
@@ -259,7 +259,7 @@ const TourDetails = () => {
                       </span>
                     </div>
 
-                    <h5>Dercription</h5>
+                    <h5>Description</h5>
                     {/* <p>{breakText(desc, 100)}</p> */}
                     <p>{formatDescription(desc, 100)}</p>
                   </div>

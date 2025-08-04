@@ -72,7 +72,7 @@ const Booking = ({ tour, avgRating }) => {
 
     // Kiểm tra nếu guestSize trống (empty)
     if (!booking.guestSize) {
-      toast.error("Vui lòng nhập số hành khác");
+      toast.error("Vui lòng nhập số hành khách");
       return;
       //alert("Please enter the number of guests.");
     }

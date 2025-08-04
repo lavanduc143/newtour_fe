@@ -107,6 +107,7 @@ const ToursTable = () => {
         const errorData = await responseAdd.json();
         throw new Error(errorData.message || "Failed to add tour");
       }
+      toast.success("Thêm tour mới thành công");
       setRefreshKey((prevKey) => prevKey + 1);
       setNewTour({
         title: "",
@@ -174,6 +175,7 @@ const ToursTable = () => {
         credentials: "include",
         body: JSON.stringify({ isDelete: true }),
       });
+      toast.success("Xoá tour thành công");
       if (!response.ok) {
         throw new Error("Failed to delete tour");
       }
@@ -205,7 +207,7 @@ const ToursTable = () => {
         body: JSON.stringify(updatedFields),
         credentials: "include",
       });
-
+      toast.success("Cập nhật tour thành công");
       if (!response.ok) {
         throw new Error("Failed to update tour");
       }
